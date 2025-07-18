@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate-client": "cd ./src/app/client && ng-openapi -c openapi.config.ts"
   },
   "prettier": {
     "overrides": [
@@ -41,6 +42,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "ng-openapi": "^0.0.22",
     "typescript": "~5.8.2"
   }
 }

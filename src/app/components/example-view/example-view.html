@@ -1,0 +1,33 @@
+<div class="documentation-container">
+  <header class="doc-header">
+    <h1 class="doc-title">Available Pets</h1>
+    <p class="doc-subtitle">Showing first 5 available pets from the pet store</p>
+  </header>
+
+  <div class="pets-grid">
+    @for (pet of limitedPets(); track pet.id) {
+      <div class="pet-card">
+        <div class="pet-header">
+          <h3 class="pet-name">{{ pet.name }}</h3>
+          <span class="pet-id">#{{ pet.id }}</span>
+        </div>
+        <div class="pet-details">
+          <div class="detail-item">
+            <span class="detail-label">Category</span>
+            <span class="detail-value">{{ pet.category?.name || 'Uncategorized' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span class="status-badge status-available">Available</span>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <div class="empty-icon">🐾</div>
+        <h3>No pets available</h3>
+        <p>Check back later for available pets.</p>
+      </div>
+    }
+  </div>
+</div>

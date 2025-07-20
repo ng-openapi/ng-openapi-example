@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate-client": "cd ./src/app/client && ng-openapi -c openapi.config.ts"
+    "build:pet-store-client": "cd ./src/app/clients/pet-store-client && ng-openapi -c openapi.config.ts",
+    "build:second-pet-store-client": "cd ./src/app/clients/second-pet-store-client && ng-openapi -c openapi.config.ts",
+    "build:clients": "npm run build:pet-store-client && npm run build:second-pet-store-client"
   },
   "prettier": {
     "overrides": [
@@ -42,7 +44,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "ng-openapi": "^0.0.22",
+    "ng-openapi": "^0.0.31",
     "typescript": "~5.8.2"
   }
 }

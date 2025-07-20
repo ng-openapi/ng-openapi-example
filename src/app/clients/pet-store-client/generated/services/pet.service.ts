@@ -10,13 +10,20 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpContext, HttpResponse, HttpEvent } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { BASE_PATH } from "../tokens";
+import { BASE_PATH_PETSTORE, CLIENT_CONTEXT_TOKEN_PETSTORE } from "../tokens";
 import { ApiResponse, Pet } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class PetService {
     private readonly httpClient: HttpClient = inject(HttpClient);
-    private readonly basePath: string = inject(BASE_PATH);
+    private readonly basePath: string = inject(BASE_PATH_PETSTORE);
+    private readonly clientContextToken: any = CLIENT_CONTEXT_TOKEN_PETSTORE;
+
+    private createContextWithClientId(existingContext?: HttpContext): HttpContext {
+
+        const context = existingContext || new HttpContext();
+        return context.set(this.clientContextToken, 'PetStore');
+    }
 
     addPet(pet: Pet, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Pet>;
     addPet(pet: Pet, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Pet>>;
@@ -28,7 +35,7 @@ export class PetService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.post(url, pet, requestOptions);
@@ -44,7 +51,7 @@ export class PetService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.put(url, pet, requestOptions);
@@ -66,7 +73,7 @@ export class PetService {
           params,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -88,7 +95,7 @@ export class PetService {
           params,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -104,7 +111,7 @@ export class PetService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -129,7 +136,7 @@ export class PetService {
           params,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.post(url, null, requestOptions);
@@ -145,7 +152,7 @@ export class PetService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.delete(url, requestOptions);
@@ -167,7 +174,7 @@ export class PetService {
           params,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.post(url, null, requestOptions);

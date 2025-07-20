@@ -10,13 +10,20 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpContext, HttpResponse, HttpEvent } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { BASE_PATH } from "../tokens";
+import { BASE_PATH_SECONDPETSTORE, CLIENT_CONTEXT_TOKEN_SECONDPETSTORE } from "../tokens";
 import { User } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
     private readonly httpClient: HttpClient = inject(HttpClient);
-    private readonly basePath: string = inject(BASE_PATH);
+    private readonly basePath: string = inject(BASE_PATH_SECONDPETSTORE);
+    private readonly clientContextToken: any = CLIENT_CONTEXT_TOKEN_SECONDPETSTORE;
+
+    private createContextWithClientId(existingContext?: HttpContext): HttpContext {
+
+        const context = existingContext || new HttpContext();
+        return context.set(this.clientContextToken, 'SecondPetStore');
+    }
 
     createUser(user?: User, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<User>;
     createUser(user?: User, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<User>>;
@@ -28,7 +35,7 @@ export class UserService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.post(url, user, requestOptions);
@@ -44,7 +51,7 @@ export class UserService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.post(url, requestBody, requestOptions);
@@ -70,7 +77,7 @@ export class UserService {
           responseType: 'text' as 'text',
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -86,7 +93,7 @@ export class UserService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -102,7 +109,7 @@ export class UserService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -118,7 +125,7 @@ export class UserService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.put(url, user, requestOptions);
@@ -134,7 +141,7 @@ export class UserService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.delete(url, requestOptions);

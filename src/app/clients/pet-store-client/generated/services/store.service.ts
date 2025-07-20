@@ -10,13 +10,20 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpContext, HttpResponse, HttpEvent } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { BASE_PATH } from "../tokens";
+import { BASE_PATH_PETSTORE, CLIENT_CONTEXT_TOKEN_PETSTORE } from "../tokens";
 import { Order } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class StoreService {
     private readonly httpClient: HttpClient = inject(HttpClient);
-    private readonly basePath: string = inject(BASE_PATH);
+    private readonly basePath: string = inject(BASE_PATH_PETSTORE);
+    private readonly clientContextToken: any = CLIENT_CONTEXT_TOKEN_PETSTORE;
+
+    private createContextWithClientId(existingContext?: HttpContext): HttpContext {
+
+        const context = existingContext || new HttpContext();
+        return context.set(this.clientContextToken, 'PetStore');
+    }
 
     getInventory(observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Record<string, unknown>>;
     getInventory(observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Record<string, unknown>>>;
@@ -28,7 +35,7 @@ export class StoreService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -44,7 +51,7 @@ export class StoreService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.post(url, order, requestOptions);
@@ -60,7 +67,7 @@ export class StoreService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.get(url, requestOptions);
@@ -76,7 +83,7 @@ export class StoreService {
           observe: observe as any,
           reportProgress: options?.reportProgress,
           withCredentials: options?.withCredentials,
-          context: options?.context
+          context: this.createContextWithClientId(options?.context)
         };
 
         return this.httpClient.delete(url, requestOptions);

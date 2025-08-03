@@ -1,9 +1,9 @@
 import { GeneratorConfig } from 'ng-openapi';
 
 const config: GeneratorConfig = {
-  input: './swagger.json',
+  input: './openapi.yaml',
   output: './generated',
-  clientName: 'SecondPetStore',
+  clientName: 'PetStoreYaml',
   options: {
     dateType: 'Date',
     enumStyle: 'enum',

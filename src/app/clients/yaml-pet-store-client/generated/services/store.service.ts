@@ -10,19 +10,19 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpContext, HttpResponse, HttpEvent } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { BASE_PATH_PETSTORE, CLIENT_CONTEXT_TOKEN_PETSTORE } from "../tokens";
+import { BASE_PATH_PETSTOREYAML, CLIENT_CONTEXT_TOKEN_PETSTOREYAML } from "../tokens";
 import { Order } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class StoreService {
     private readonly httpClient: HttpClient = inject(HttpClient);
-    private readonly basePath: string = inject(BASE_PATH_PETSTORE);
-    private readonly clientContextToken: any = CLIENT_CONTEXT_TOKEN_PETSTORE;
+    private readonly basePath: string = inject(BASE_PATH_PETSTOREYAML);
+    private readonly clientContextToken: any = CLIENT_CONTEXT_TOKEN_PETSTOREYAML;
 
     private createContextWithClientId(existingContext?: HttpContext): HttpContext {
 
         const context = existingContext || new HttpContext();
-        return context.set(this.clientContextToken, 'PetStore');
+        return context.set(this.clientContextToken, 'PetStoreYaml');
     }
 
     getInventory(observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Record<string, unknown>>;

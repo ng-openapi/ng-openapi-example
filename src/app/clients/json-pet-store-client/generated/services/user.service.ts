@@ -10,19 +10,19 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpContext, HttpResponse, HttpEvent } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { BASE_PATH_PETSTORE, CLIENT_CONTEXT_TOKEN_PETSTORE } from "../tokens";
+import { BASE_PATH_PETSTOREJSON, CLIENT_CONTEXT_TOKEN_PETSTOREJSON } from "../tokens";
 import { User } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
     private readonly httpClient: HttpClient = inject(HttpClient);
-    private readonly basePath: string = inject(BASE_PATH_PETSTORE);
-    private readonly clientContextToken: any = CLIENT_CONTEXT_TOKEN_PETSTORE;
+    private readonly basePath: string = inject(BASE_PATH_PETSTOREJSON);
+    private readonly clientContextToken: any = CLIENT_CONTEXT_TOKEN_PETSTOREJSON;
 
     private createContextWithClientId(existingContext?: HttpContext): HttpContext {
 
         const context = existingContext || new HttpContext();
-        return context.set(this.clientContextToken, 'PetStore');
+        return context.set(this.clientContextToken, 'PetStoreJson');
     }
 
     createUser(user?: User, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<User>;

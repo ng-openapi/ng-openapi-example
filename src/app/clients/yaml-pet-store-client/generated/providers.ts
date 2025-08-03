@@ -9,12 +9,12 @@
 */
 import { EnvironmentProviders, Provider, makeEnvironmentProviders } from "@angular/core";
 import { HTTP_INTERCEPTORS, HttpInterceptor } from "@angular/common/http";
-import { BASE_PATH_SECONDPETSTORE, HTTP_INTERCEPTORS_SECONDPETSTORE } from "./tokens";
-import { SecondPetStoreBaseInterceptor } from "./utils/base-interceptor";
+import { BASE_PATH_PETSTOREYAML, HTTP_INTERCEPTORS_PETSTOREYAML } from "./tokens";
+import { PetStoreYamlBaseInterceptor } from "./utils/base-interceptor";
 import { DateInterceptor } from "./utils/date-transformer";
 
-/** Configuration options for SecondPetStore client */
-export interface SecondPetStoreConfig {
+/** Configuration options for PetStoreYaml client */
+export interface PetStoreYamlConfig {
     /** Base API URL */
     basePath: string;
     /** Enable automatic date transformation (default: true) */
@@ -23,16 +23,16 @@ export interface SecondPetStoreConfig {
     interceptors?: (new (...args: HttpInterceptor[]) => HttpInterceptor)[];
 }
 
-/** Provides configuration for SecondPetStore client */
+/** Provides configuration for PetStoreYaml client */
 /** */
 /** @example */
 /** ```typescript */
 /** // In your app.config.ts */
-/** import { provideSecondPetStoreClient } from './api/providers'; */
+/** import { providePetStoreYamlClient } from './api/providers'; */
 /** */
 /** export const appConfig: ApplicationConfig = { */
 /**   providers: [ */
-/**     provideSecondPetStoreClient({ */
+/**     providePetStoreYamlClient({ */
 /**       basePath: 'https://api.example.com', */
 /**       interceptors: [AuthInterceptor, LoggingInterceptor] // Classes, not instances */
 /**     }), */
@@ -40,18 +40,18 @@ export interface SecondPetStoreConfig {
 /**   ] */
 /** }; */
 /** ``` */
-export function provideSecondPetStoreClient(config: SecondPetStoreConfig): EnvironmentProviders {
+export function providePetStoreYamlClient(config: PetStoreYamlConfig): EnvironmentProviders {
 
     const providers: Provider[] = [
         // Base path token for this client
         {
-            provide: BASE_PATH_SECONDPETSTORE,
+            provide: BASE_PATH_PETSTOREYAML,
             useValue: config.basePath
         },
         // Base interceptor that handles client-specific interceptors
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: SecondPetStoreBaseInterceptor,
+            useClass: PetStoreYamlBaseInterceptor,
             multi: true
         }
     ];
@@ -66,19 +66,19 @@ export function provideSecondPetStoreClient(config: SecondPetStoreConfig): Envir
         }
         
         providers.push({
-            provide: HTTP_INTERCEPTORS_SECONDPETSTORE,
+            provide: HTTP_INTERCEPTORS_PETSTOREYAML,
             useValue: interceptorInstances
         });
     } else if (config.enableDateTransform !== false) {
         // Only date interceptor enabled
         providers.push({
-            provide: HTTP_INTERCEPTORS_SECONDPETSTORE,
+            provide: HTTP_INTERCEPTORS_PETSTOREYAML,
             useValue: [new DateInterceptor()]
         });
     } else {
         // No interceptors
         providers.push({
-            provide: HTTP_INTERCEPTORS_SECONDPETSTORE,
+            provide: HTTP_INTERCEPTORS_PETSTOREYAML,
             useValue: []
         });
     }

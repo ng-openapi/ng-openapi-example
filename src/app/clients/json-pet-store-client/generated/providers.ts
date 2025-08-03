@@ -9,12 +9,12 @@
 */
 import { EnvironmentProviders, Provider, makeEnvironmentProviders } from "@angular/core";
 import { HTTP_INTERCEPTORS, HttpInterceptor } from "@angular/common/http";
-import { BASE_PATH_PETSTORE, HTTP_INTERCEPTORS_PETSTORE } from "./tokens";
-import { PetStoreBaseInterceptor } from "./utils/base-interceptor";
+import { BASE_PATH_PETSTOREJSON, HTTP_INTERCEPTORS_PETSTOREJSON } from "./tokens";
+import { PetStoreJsonBaseInterceptor } from "./utils/base-interceptor";
 import { DateInterceptor } from "./utils/date-transformer";
 
-/** Configuration options for PetStore client */
-export interface PetStoreConfig {
+/** Configuration options for PetStoreJson client */
+export interface PetStoreJsonConfig {
     /** Base API URL */
     basePath: string;
     /** Enable automatic date transformation (default: true) */
@@ -23,16 +23,16 @@ export interface PetStoreConfig {
     interceptors?: (new (...args: HttpInterceptor[]) => HttpInterceptor)[];
 }
 
-/** Provides configuration for PetStore client */
+/** Provides configuration for PetStoreJson client */
 /** */
 /** @example */
 /** ```typescript */
 /** // In your app.config.ts */
-/** import { providePetStoreClient } from './api/providers'; */
+/** import { providePetStoreJsonClient } from './api/providers'; */
 /** */
 /** export const appConfig: ApplicationConfig = { */
 /**   providers: [ */
-/**     providePetStoreClient({ */
+/**     providePetStoreJsonClient({ */
 /**       basePath: 'https://api.example.com', */
 /**       interceptors: [AuthInterceptor, LoggingInterceptor] // Classes, not instances */
 /**     }), */
@@ -40,18 +40,18 @@ export interface PetStoreConfig {
 /**   ] */
 /** }; */
 /** ``` */
-export function providePetStoreClient(config: PetStoreConfig): EnvironmentProviders {
+export function providePetStoreJsonClient(config: PetStoreJsonConfig): EnvironmentProviders {
 
     const providers: Provider[] = [
         // Base path token for this client
         {
-            provide: BASE_PATH_PETSTORE,
+            provide: BASE_PATH_PETSTOREJSON,
             useValue: config.basePath
         },
         // Base interceptor that handles client-specific interceptors
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: PetStoreBaseInterceptor,
+            useClass: PetStoreJsonBaseInterceptor,
             multi: true
         }
     ];
@@ -66,19 +66,19 @@ export function providePetStoreClient(config: PetStoreConfig): EnvironmentProvid
         }
         
         providers.push({
-            provide: HTTP_INTERCEPTORS_PETSTORE,
+            provide: HTTP_INTERCEPTORS_PETSTOREJSON,
             useValue: interceptorInstances
         });
     } else if (config.enableDateTransform !== false) {
         // Only date interceptor enabled
         providers.push({
-            provide: HTTP_INTERCEPTORS_PETSTORE,
+            provide: HTTP_INTERCEPTORS_PETSTOREJSON,
             useValue: [new DateInterceptor()]
         });
     } else {
         // No interceptors
         providers.push({
-            provide: HTTP_INTERCEPTORS_PETSTORE,
+            provide: HTTP_INTERCEPTORS_PETSTOREJSON,
             useValue: []
         });
     }

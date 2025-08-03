@@ -3,8 +3,8 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {AuthInterceptor, ErrorInterceptor, LoggingInterceptor, WarningInterceptor} from './interceptors/interceptors';
-import {providePetStoreClient} from './clients/pet-store-client/generated';
-import {provideSecondPetStoreClient} from './clients/second-pet-store-client/generated';
+import {providePetStoreJsonClient} from './clients/json-pet-store-client/generated';
+import {providePetStoreYamlClient} from './clients/yaml-pet-store-client/generated';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,11 +12,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
-    providePetStoreClient({
+    providePetStoreJsonClient({
       basePath: 'https://petstore3.swagger.io/api/v3',
       interceptors: [ErrorInterceptor, AuthInterceptor, LoggingInterceptor, WarningInterceptor]
     }),
-    provideSecondPetStoreClient({
+    providePetStoreYamlClient({
       basePath: 'https://petstore3.swagger.io/api/v3',
       interceptors: [WarningInterceptor, LoggingInterceptor]
     }),

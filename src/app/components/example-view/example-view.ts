@@ -1,5 +1,5 @@
 import {Component, inject, computed} from '@angular/core';
-import {PetService} from '../../clients/pet-store-client/generated';
+import {PetService} from '../../clients/json-pet-store-client/generated';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({

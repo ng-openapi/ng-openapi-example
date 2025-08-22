@@ -19,22 +19,22 @@ export class PetStoreYamlBaseInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-            // Check if this request belongs to this client using HttpContext
-            if (!req.context.has(this.clientContextToken)) {
-              // This request doesn't belong to this client, pass it through
-              return next.handle(req);
-            }
+        // Check if this request belongs to this client using HttpContext
+        if (!req.context.has(this.clientContextToken)) {
+            // This request doesn't belong to this client, pass it through
+            return next.handle(req);
+        }
 
-            // Apply client-specific interceptors in reverse order
-            let handler = next;
+        // Apply client-specific interceptors in reverse order
+        let handler = next;
 
-            handler = this.httpInterceptors.reduceRight(
-              (next, interceptor) => ({
+        handler = this.httpInterceptors.reduceRight(
+            (next, interceptor) => ({
                 handle: (request: HttpRequest<any>) => interceptor.intercept(request, next)
-              }),
-              handler
-            );
+            }),
+            handler
+        );
 
-            return handler.handle(req);
+        return handler.handle(req);
     }
 }

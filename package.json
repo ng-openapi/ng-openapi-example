@@ -7,9 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:json-pet-store-client": "cd ./src/app/clients/json-pet-store-client && ng-openapi -c openapi.config.ts",
-    "build:url-pet-store-client": "cd ./src/app/clients/url-pet-store-client && ng-openapi -c openapi.config.ts",
-    "build:yaml-pet-store-client": "cd ./src/app/clients/yaml-pet-store-client && ng-openapi -c openapi.config.ts",
+    "build:json-pet-store-client": "ng-openapi -c ./src/app/clients/json-pet-store-client/openapi.config.ts",
+    "build:url-pet-store-client": "ng-openapi -c ./src/app/clients/url-pet-store-client/openapi.config.ts",
+    "build:yaml-pet-store-client": "ng-openapi -c ./src/app/clients/yaml-pet-store-client/openapi.config.ts",
     "build:clients": "npm run build:json-pet-store-client & npm run build:url-pet-store-client & npm run build:yaml-pet-store-client"
   },
   "prettier": {
@@ -45,7 +45,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "ng-openapi": "0.0.41",
+    "ng-openapi": "0.1.8",
     "typescript": "~5.8.2"
   }
 }

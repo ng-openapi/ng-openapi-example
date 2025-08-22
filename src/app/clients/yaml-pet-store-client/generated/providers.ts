@@ -59,12 +59,12 @@ export function providePetStoreYamlClient(config: PetStoreYamlConfig): Environme
     // Add client-specific interceptor instances
     if (config.interceptors && config.interceptors.length > 0) {
         const interceptorInstances = config.interceptors.map(InterceptorClass => new InterceptorClass());
-        
+
         // Add date interceptor if enabled (default: true)
         if (config.enableDateTransform !== false) {
             interceptorInstances.unshift(new DateInterceptor());
         }
-        
+
         providers.push({
             provide: HTTP_INTERCEPTORS_PETSTOREYAML,
             useValue: interceptorInstances

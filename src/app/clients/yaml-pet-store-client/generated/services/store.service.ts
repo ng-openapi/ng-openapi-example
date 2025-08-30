@@ -9,9 +9,9 @@
 */
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpContext, HttpResponse, HttpEvent, HttpContextToken } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, map } from "rxjs";
 import { BASE_PATH_PETSTOREYAML, CLIENT_CONTEXT_TOKEN_PETSTOREYAML } from "../tokens";
-import { Order } from "../models";
+import { Order, RequestOptions } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class StoreService {
@@ -24,10 +24,11 @@ export class StoreService {
         return context.set(this.clientContextToken, 'PetStoreYaml');
     }
 
-    getInventory(observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Record<string, unknown>>;
-    getInventory(observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Record<string, unknown>>>;
-    getInventory(observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Record<string, unknown>>>;
-    getInventory(observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    getInventory(observe?: 'body', options?: RequestOptions<'json'>): Observable<Record<string, unknown>>;
+    getInventory(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Record<string, unknown>>>;
+    getInventory(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Record<string, unknown>>>;
+    /** Returns a map of status codes to quantities. */
+    getInventory(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/inventory`;
 
         const requestOptions: any = {
@@ -40,10 +41,11 @@ export class StoreService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    placeOrder(order?: Order, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Order>;
-    placeOrder(order?: Order, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Order>>;
-    placeOrder(order?: Order, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Order>>;
-    placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    placeOrder(order?: Order, observe?: 'body', options?: RequestOptions<'json'>): Observable<Order>;
+    placeOrder(order?: Order, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Order>>;
+    placeOrder(order?: Order, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Order>>;
+    /** Place a new order in the store. */
+    placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order`;
 
         const requestOptions: any = {
@@ -56,10 +58,11 @@ export class StoreService {
         return this.httpClient.post(url, order, requestOptions);
     }
 
-    getOrderById(orderId: number, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Order>;
-    getOrderById(orderId: number, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Order>>;
-    getOrderById(orderId: number, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Order>>;
-    getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    getOrderById(orderId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<Order>;
+    getOrderById(orderId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Order>>;
+    getOrderById(orderId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Order>>;
+    /** For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions. */
+    getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
         const requestOptions: any = {
@@ -72,10 +75,11 @@ export class StoreService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    deleteOrder(orderId: number, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<any>;
-    deleteOrder(orderId: number, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<any>>;
-    deleteOrder(orderId: number, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<any>>;
-    deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    deleteOrder(orderId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    deleteOrder(orderId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    deleteOrder(orderId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    /** For valid response try integer IDs with value < 1000. Anything above 1000 or non-integers will generate API errors. */
+    deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
         const requestOptions: any = {

@@ -9,9 +9,9 @@
 */
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpContext, HttpResponse, HttpEvent, HttpContextToken } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, map } from "rxjs";
 import { BASE_PATH_PETSTOREURL, CLIENT_CONTEXT_TOKEN_PETSTOREURL } from "../tokens";
-import { ApiResponse, Pet } from "../models";
+import { ApiResponse, Pet, RequestOptions } from "../models";
 
 @Injectable({ providedIn: "root" })
 export class PetService {
@@ -24,10 +24,11 @@ export class PetService {
         return context.set(this.clientContextToken, 'PetStoreUrl');
     }
 
-    addPet(pet: Pet, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Pet>;
-    addPet(pet: Pet, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Pet>>;
-    addPet(pet: Pet, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Pet>>;
-    addPet(pet: Pet, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    addPet(pet: Pet, observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet>;
+    addPet(pet: Pet, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Pet>>;
+    addPet(pet: Pet, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Pet>>;
+    /** Add a new pet to the store. */
+    addPet(pet: Pet, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet`;
 
         const requestOptions: any = {
@@ -40,10 +41,11 @@ export class PetService {
         return this.httpClient.post(url, pet, requestOptions);
     }
 
-    updatePet(pet: Pet, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Pet>;
-    updatePet(pet: Pet, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Pet>>;
-    updatePet(pet: Pet, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Pet>>;
-    updatePet(pet: Pet, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    updatePet(pet: Pet, observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet>;
+    updatePet(pet: Pet, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Pet>>;
+    updatePet(pet: Pet, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Pet>>;
+    /** Update an existing pet by Id. */
+    updatePet(pet: Pet, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet`;
 
         const requestOptions: any = {
@@ -56,10 +58,11 @@ export class PetService {
         return this.httpClient.put(url, pet, requestOptions);
     }
 
-    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Pet[]>;
-    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Pet[]>>;
-    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Pet[]>>;
-    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet[]>;
+    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Pet[]>>;
+    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Pet[]>>;
+    /** Multiple status values can be provided with comma separated strings. */
+    findPetsByStatus(status: 'available' | 'pending' | 'sold', observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/findByStatus`;
 
         let params = new HttpParams();
@@ -78,10 +81,11 @@ export class PetService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    findPetsByTags(tags: string[], observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Pet[]>;
-    findPetsByTags(tags: string[], observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Pet[]>>;
-    findPetsByTags(tags: string[], observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Pet[]>>;
-    findPetsByTags(tags: string[], observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    findPetsByTags(tags: string[], observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet[]>;
+    findPetsByTags(tags: string[], observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Pet[]>>;
+    findPetsByTags(tags: string[], observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Pet[]>>;
+    /** Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing. */
+    findPetsByTags(tags: string[], observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/findByTags`;
 
         let params = new HttpParams();
@@ -100,10 +104,11 @@ export class PetService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    getPetById(petId: number, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Pet>;
-    getPetById(petId: number, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Pet>>;
-    getPetById(petId: number, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Pet>>;
-    getPetById(petId: number, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    getPetById(petId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet>;
+    getPetById(petId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Pet>>;
+    getPetById(petId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Pet>>;
+    /** Returns a single pet. */
+    getPetById(petId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
         const requestOptions: any = {
@@ -116,10 +121,11 @@ export class PetService {
         return this.httpClient.get(url, requestOptions);
     }
 
-    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<Pet>;
-    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<Pet>>;
-    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<Pet>>;
-    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet>;
+    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Pet>>;
+    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Pet>>;
+    /** Updates a pet resource based on the form data. */
+    updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
         let params = new HttpParams();
@@ -141,10 +147,11 @@ export class PetService {
         return this.httpClient.post(url, null, requestOptions);
     }
 
-    deletePet(petId: number, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<any>;
-    deletePet(petId: number, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<any>>;
-    deletePet(petId: number, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<any>>;
-    deletePet(petId: number, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    deletePet(petId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    deletePet(petId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    deletePet(petId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    /** Delete a pet. */
+    deletePet(petId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
         const requestOptions: any = {
@@ -157,10 +164,11 @@ export class PetService {
         return this.httpClient.delete(url, requestOptions);
     }
 
-    uploadFile(petId: number, additionalMetadata?: string, observe?: 'body', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<ApiResponse>;
-    uploadFile(petId: number, additionalMetadata?: string, observe?: 'response', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpResponse<ApiResponse>>;
-    uploadFile(petId: number, additionalMetadata?: string, observe?: 'events', options?: { headers?: HttpHeaders; reportProgress?: boolean; responseType?: 'json'; withCredentials?: boolean; context?: HttpContext; }): Observable<HttpEvent<ApiResponse>>;
-    uploadFile(petId: number, additionalMetadata?: string, observe?: 'body' | 'events' | 'response', options?: { headers?: HttpHeaders; params?: HttpParams; reportProgress?: boolean; responseType?: 'arraybuffer' | 'blob' | 'json' | 'text'; withCredentials?: boolean; context?: HttpContext; }): Observable<any> {
+    uploadFile(petId: number, additionalMetadata?: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<ApiResponse>;
+    uploadFile(petId: number, additionalMetadata?: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<ApiResponse>>;
+    uploadFile(petId: number, additionalMetadata?: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<ApiResponse>>;
+    /** Upload image of the pet. */
+    uploadFile(petId: number, additionalMetadata?: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/${petId}/uploadImage`;
 
         let params = new HttpParams();

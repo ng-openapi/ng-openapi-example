@@ -1,5 +1,4 @@
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { Observable, tap } from "rxjs";
 
 export function downloadFile(blob: Blob, filename: string, mimeType?: string): void {
 

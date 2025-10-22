@@ -1,9 +1,13 @@
 import { GeneratorConfig } from 'ng-openapi';
+import {HttpResourcePlugin} from '@ng-openapi/http-resource';
 
 const config: GeneratorConfig = {
   input: './openapi.yaml',
   output: './generated',
   clientName: 'PetStoreYaml',
+  plugins: [
+    HttpResourcePlugin
+  ],
   options: {
     dateType: 'Date',
     enumStyle: 'enum',

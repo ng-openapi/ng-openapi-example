@@ -1,9 +1,13 @@
 import { GeneratorConfig } from 'ng-openapi';
+import {HttpResourcePlugin} from '@ng-openapi/http-resource';
 
 const config: GeneratorConfig = {
   input: './swagger.json',
   output: './generated',
   clientName: 'PetStoreJson',
+  plugins: [
+    HttpResourcePlugin
+  ],
   options: {
     dateType: 'Date',
     enumStyle: 'enum',

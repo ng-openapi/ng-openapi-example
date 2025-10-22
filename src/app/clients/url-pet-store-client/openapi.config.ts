@@ -1,9 +1,13 @@
 import { GeneratorConfig } from 'ng-openapi';
+import {HttpResourcePlugin} from '@ng-openapi/http-resource';
 
 const config: GeneratorConfig = {
   input: 'https://petstore3.swagger.io/api/v3/openapi.json',
   output: './generated',
   clientName: 'PetStoreUrl',
+  plugins: [
+    HttpResourcePlugin
+  ],
   validateInput: (spec) => {
     return spec.info.title === "Swagger Petstore - OpenAPI 3.0";
   },

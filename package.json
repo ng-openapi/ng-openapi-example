@@ -7,9 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:json-pet-store-client": "ng-openapi -c ./src/app/clients/json-pet-store-client/openapi.config.ts",
-    "build:url-pet-store-client": "ng-openapi -c ./src/app/clients/url-pet-store-client/openapi.config.ts",
-    "build:yaml-pet-store-client": "ng-openapi -c ./src/app/clients/yaml-pet-store-client/openapi.config.ts",
+    "build:json": "ng-openapi -c ./src/app/clients/json-pet-store-client/openapi.config.ts",
+    "build:url": "ng-openapi -c ./src/app/clients/url-pet-store-client/openapi.config.ts",
+    "build:yaml": "ng-openapi -c ./src/app/clients/yaml-pet-store-client/openapi.config.ts",
     "build:clients": "npm run build:json-pet-store-client & npm run build:url-pet-store-client & npm run build:yaml-pet-store-client"
   },
   "prettier": {

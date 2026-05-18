@@ -28,10 +28,18 @@ export class StoreResource {
     getInventory(resourceOptions?: HttpResourceOptions<Record<string, any>, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Record<string, any> | undefined>;
     /** Returns a map of status codes to quantities. */
     getInventory(resourceOptions?: HttpResourceOptions<Record<string, any>, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Record<string, any> | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource(() => {
             return {
                 url: `${this.basePath}/store/inventory`,
                 method: "GET",
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
             }
@@ -42,10 +50,18 @@ export class StoreResource {
     getOrderById(orderId: Signal<number> | number, resourceOptions?: HttpResourceOptions<Order, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Order | undefined>;
     /** For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions. */
     getOrderById(orderId: Signal<number> | number, resourceOptions?: HttpResourceOptions<Order, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Order | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource(() => {
             return {
                 url: `${this.basePath}/store/order/${typeof orderId === 'function' ? orderId() : orderId}`,
                 method: "GET",
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
             }

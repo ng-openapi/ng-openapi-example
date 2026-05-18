@@ -32,8 +32,16 @@ export class StoreService {
     getInventory(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/inventory`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -49,8 +57,20 @@ export class StoreService {
     placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+        // Set Content-Type for JSON requests if not already set
+        if (!headers.has('Content-Type')) {
+            headers = headers.set('Content-Type', 'application/json');
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -66,8 +86,16 @@ export class StoreService {
     getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -83,8 +111,16 @@ export class StoreService {
     deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)

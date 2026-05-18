@@ -32,8 +32,20 @@ export class UserService {
     createUser(user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+        // Set Content-Type for JSON requests if not already set
+        if (!headers.has('Content-Type')) {
+            headers = headers.set('Content-Type', 'application/json');
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -49,8 +61,20 @@ export class UserService {
     createUsersWithListInput(requestBody?: Array<User>, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/createWithList`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+        // Set Content-Type for JSON requests if not already set
+        if (!headers.has('Content-Type')) {
+            headers = headers.set('Content-Type', 'application/json');
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -74,8 +98,16 @@ export class UserService {
             params = HttpParamsBuilder.addToHttpParams(params, password, 'password');
         }
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             params,
             responseType: 'text' as 'text',
             reportProgress: options?.reportProgress,
@@ -93,8 +125,16 @@ export class UserService {
     logoutUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/logout`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -110,8 +150,16 @@ export class UserService {
     getUserByName(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -127,8 +175,20 @@ export class UserService {
     updateUser(username: string, user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+        // Set Content-Type for JSON requests if not already set
+        if (!headers.has('Content-Type')) {
+            headers = headers.set('Content-Type', 'application/json');
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -144,8 +204,16 @@ export class UserService {
     deleteUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)

@@ -10,7 +10,6 @@ import {providePetStoreUrlClient} from './clients/url-pet-store-client/generated
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     providePetStoreJsonClient({

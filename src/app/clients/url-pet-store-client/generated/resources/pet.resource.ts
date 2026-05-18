@@ -28,6 +28,13 @@ export class PetResource {
     findPetsByStatus(status: Signal<'available' | 'pending' | 'sold'> | 'available' | 'pending' | 'sold', resourceOptions?: HttpResourceOptions<Array<Pet>, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Array<Pet> | undefined>;
     /** Multiple status values can be provided with comma separated strings. */
     findPetsByStatus(status: Signal<'available' | 'pending' | 'sold'> | 'available' | 'pending' | 'sold', resourceOptions?: HttpResourceOptions<Array<Pet>, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Array<Pet> | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource(() => {
             let params = new HttpParams();
             const statusValue = typeof status === 'function' ? status() : status;
@@ -38,6 +45,7 @@ export class PetResource {
                 url: `${this.basePath}/pet/findByStatus`,
                 method: "GET",
                 params,
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
             }
@@ -48,6 +56,13 @@ export class PetResource {
     findPetsByTags(tags: Signal<Array<string>> | Array<string>, resourceOptions?: HttpResourceOptions<Array<Pet>, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Array<Pet> | undefined>;
     /** Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing. */
     findPetsByTags(tags: Signal<Array<string>> | Array<string>, resourceOptions?: HttpResourceOptions<Array<Pet>, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Array<Pet> | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource(() => {
             let params = new HttpParams();
             const tagsValue = typeof tags === 'function' ? tags() : tags;
@@ -58,6 +73,7 @@ export class PetResource {
                 url: `${this.basePath}/pet/findByTags`,
                 method: "GET",
                 params,
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
             }
@@ -68,10 +84,18 @@ export class PetResource {
     getPetById(petId: Signal<number> | number, resourceOptions?: HttpResourceOptions<Pet, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Pet | undefined>;
     /** Returns a single pet. */
     getPetById(petId: Signal<number> | number, resourceOptions?: HttpResourceOptions<Pet, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<Pet | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource(() => {
             return {
                 url: `${this.basePath}/pet/${typeof petId === 'function' ? petId() : petId}`,
                 method: "GET",
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
             }

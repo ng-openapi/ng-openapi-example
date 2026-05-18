@@ -4,7 +4,8 @@ export class HttpParamsBuilder {
     /** Adds a value to HttpParams. Delegates to recursive handler for objects/arrays. */
     public static addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
         const isDate = value instanceof Date;
-        const isObject = typeof value === "object" && !isDate;
+        const isArray = Array.isArray(value);
+        const isObject = typeof value === "object" && !isDate && !isArray;
 
         if (isObject) {
             return this.addToHttpParamsRecursive(httpParams, value);
@@ -44,7 +45,7 @@ export class HttpParamsBuilder {
         if (!key) {
             throw new Error("key may not be null if value is Date");
         }
-        return httpParams.append(key, date.toISOString().substring(0, 10));
+        return httpParams.append(key, date.toISOString());
     }
 
     private static handleObject(httpParams: HttpParams, obj: Record<string, any>, key?: string): HttpParams {

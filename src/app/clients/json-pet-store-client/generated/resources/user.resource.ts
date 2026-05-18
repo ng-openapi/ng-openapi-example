@@ -28,6 +28,13 @@ export class UserResource {
     loginUser(username?: Signal<string | undefined> | string, password?: Signal<string | undefined> | string, resourceOptions?: HttpResourceOptions<string, string>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<string | undefined>;
     /** Log into the system. */
     loginUser(username?: Signal<string | undefined> | string, password?: Signal<string | undefined> | string, resourceOptions?: HttpResourceOptions<string, string>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<string | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource.text(() => {
             let params = new HttpParams();
             const usernameValue = typeof username === 'function' ? username() : username;
@@ -42,6 +49,7 @@ export class UserResource {
                 url: `${this.basePath}/user/login`,
                 method: "GET",
                 params,
+                headers,
                 responseType: 'text' as 'text',
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
@@ -53,10 +61,18 @@ export class UserResource {
     logoutUser(resourceOptions?: HttpResourceOptions<any, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<any | undefined>;
     /** Log user out of the system. */
     logoutUser(resourceOptions?: HttpResourceOptions<any, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<any | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource(() => {
             return {
                 url: `${this.basePath}/user/logout`,
                 method: "GET",
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
             }
@@ -67,10 +83,18 @@ export class UserResource {
     getUserByName(username: Signal<string> | string, resourceOptions?: HttpResourceOptions<User, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<User | undefined>;
     /** Get user detail based on username. */
     getUserByName(username: Signal<string> | string, resourceOptions?: HttpResourceOptions<User, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<User | undefined> {
+
+        let headers: HttpHeaders;
+        if (requestOptions?.headers instanceof HttpHeaders) {
+            headers = requestOptions.headers;
+        } else {
+            headers = new HttpHeaders(requestOptions?.headers as Record<string, string>);
+        }
         return httpResource(() => {
             return {
                 url: `${this.basePath}/user/${typeof username === 'function' ? username() : username}`,
                 method: "GET",
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context),
                 ...requestOptions
             }

@@ -32,8 +32,20 @@ export class PetService {
     addPet(pet: Pet, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+        // Set Content-Type for JSON requests if not already set
+        if (!headers.has('Content-Type')) {
+            headers = headers.set('Content-Type', 'application/json');
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -49,8 +61,20 @@ export class PetService {
     updatePet(pet: Pet, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+        // Set Content-Type for JSON requests if not already set
+        if (!headers.has('Content-Type')) {
+            headers = headers.set('Content-Type', 'application/json');
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -71,8 +95,16 @@ export class PetService {
             params = HttpParamsBuilder.addToHttpParams(params, status, 'status');
         }
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -94,8 +126,16 @@ export class PetService {
             params = HttpParamsBuilder.addToHttpParams(params, tags, 'tags');
         }
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -112,8 +152,16 @@ export class PetService {
     getPetById(petId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -137,8 +185,16 @@ export class PetService {
             params = HttpParamsBuilder.addToHttpParams(params, status, 'status');
         }
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
@@ -155,8 +211,16 @@ export class PetService {
     deletePet(petId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/pet/${petId}`;
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
@@ -177,8 +241,20 @@ export class PetService {
             params = HttpParamsBuilder.addToHttpParams(params, additionalMetadata, 'additionalMetadata');
         }
 
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+        // Set Content-Type for JSON requests if not already set
+        if (!headers.has('Content-Type')) {
+            headers = headers.set('Content-Type', 'application/json');
+        }
+
         const requestOptions: any = {
             observe: observe as any,
+            headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,

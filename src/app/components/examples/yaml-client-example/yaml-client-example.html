@@ -1,0 +1,98 @@
+<section class="example-section">
+  <header class="section-header">
+    <div class="section-heading">
+      <h2 class="section-title">YAML client · single request parameter, &#64;Service and naming</h2>
+      <p class="section-description">
+        <code>useSingleRequestParameter</code> collapses parameters into <code>GetPetByIdParams</code>,
+        <code>serviceDecorator: 'service'</code> emits Angular 22's <code>&#64;Service()</code>, and
+        <code>naming</code> renames the output to <code>ApiPetService</code> / <code>PetDto</code>.
+      </p>
+    </div>
+    <ul class="feature-tags">
+      <li>useSingleRequestParameter</li>
+      <li>serviceDecorator</li>
+      <li>naming</li>
+      <li>HttpResourcePlugin</li>
+    </ul>
+  </header>
+
+  <div class="split">
+    <div class="detail-panel">
+      <h3 class="detail-title">ApiPetService.getPetById({{ '{' }} petId {{ '}' }})</h3>
+      <form class="toolbar" (submit)="$event.preventDefault(); loadPet(petIdInput.value)">
+        <label class="field">
+          <span>Pet id</span>
+          <input #petIdInput type="number" min="1" [value]="petId()" />
+        </label>
+        <button type="submit" class="secondary-button" [disabled]="pet.isLoading()">Load</button>
+        <span class="resource-state" [class.is-loading]="pet.isLoading()">{{ pet.status() }}</span>
+      </form>
+
+      @if (pet.error(); as error) {
+        <div class="error-state"><strong>Request failed.</strong> {{ error.message }}</div>
+      } @else if (pet.hasValue()) {
+        <div class="pet-card">
+          <div class="pet-header">
+            <h3 class="pet-name">{{ pet.value().name }}</h3>
+            <span class="pet-id">#{{ pet.value().id }}</span>
+          </div>
+          <div class="pet-details">
+            <div class="detail-item">
+              <span class="detail-label">Category</span>
+              <span class="detail-value">{{ pet.value().category?.name || 'Uncategorized' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Status</span>
+              <span [class]="'status-badge status-' + (pet.value().status ?? 'unknown')">
+                {{ pet.value().status ?? 'unknown' }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Type</span>
+              <span class="detail-value"><code>PetDto</code></span>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <p class="muted">Loading pet #{{ petId() }}…</p>
+      }
+    </div>
+
+    <div class="detail-panel">
+      <h3 class="detail-title">ApiUserResource.getUserByName(username)</h3>
+      <form class="toolbar" (submit)="$event.preventDefault(); loadUser(usernameInput.value)">
+        <label class="field">
+          <span>Username</span>
+          <input #usernameInput type="text" [value]="username()" />
+        </label>
+        <button type="submit" class="secondary-button" [disabled]="user.isLoading()">Load</button>
+        <span class="resource-state" [class.is-loading]="user.isLoading()">{{ user.status() }}</span>
+      </form>
+
+      @if (user.error(); as error) {
+        <div class="error-state"><strong>Request failed.</strong> {{ error.message }}</div>
+      } @else if (user.hasValue()) {
+        <div class="pet-details">
+          <div class="detail-item">
+            <span class="detail-label">Username</span>
+            <span class="detail-value">{{ user.value().username }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">{{ user.value().firstName }} {{ user.value().lastName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ user.value().email }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Type</span>
+            <span class="detail-value"><code>UserDto</code></span>
+          </div>
+        </div>
+      } @else {
+        <p class="muted">Loading user "{{ username() }}"…</p>
+      }
+    </div>
+  </div>
+</section>

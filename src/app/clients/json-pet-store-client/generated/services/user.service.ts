@@ -9,7 +9,7 @@
 */
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { BASE_PATH_PETSTOREJSON, CLIENT_CONTEXT_TOKEN_PETSTOREJSON } from "../tokens";
 import { HttpParamsBuilder } from "../utils/http-params-builder";
 import { User, RequestOptions } from "../models";
@@ -25,11 +25,11 @@ export class UserService {
         return context.set(this.clientContextToken, 'PetStoreJson');
     }
 
-    createUser(user?: User, observe?: 'body', options?: RequestOptions<'json'>): Observable<User>;
-    createUser(user?: User, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<User>>;
-    createUser(user?: User, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<User>>;
+    createUser(user?: User, observe?: 'body', options?: RequestOptions<'json', User>): Observable<User>;
+    createUser(user?: User, observe?: 'response', options?: RequestOptions<'json', User>): Observable<HttpResponse<User>>;
+    createUser(user?: User, observe?: 'events', options?: RequestOptions<'json', User>): Observable<HttpEvent<User>>;
     /** This can only be done by the logged in user. */
-    createUser(user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUser(user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/user`;
 
         let headers: HttpHeaders;
@@ -54,14 +54,14 @@ export class UserService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    createUsersWithListInput(requestBody?: Array<User>, observe?: 'body', options?: RequestOptions<'json'>): Observable<User>;
-    createUsersWithListInput(requestBody?: Array<User>, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<User>>;
-    createUsersWithListInput(requestBody?: Array<User>, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<User>>;
+    createUsersWithListInput(requestBody?: Array<User>, observe?: 'body', options?: RequestOptions<'json', User>): Observable<User>;
+    createUsersWithListInput(requestBody?: Array<User>, observe?: 'response', options?: RequestOptions<'json', User>): Observable<HttpResponse<User>>;
+    createUsersWithListInput(requestBody?: Array<User>, observe?: 'events', options?: RequestOptions<'json', User>): Observable<HttpEvent<User>>;
     /** Creates list of users with given input array. */
-    createUsersWithListInput(requestBody?: Array<User>, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    createUsersWithListInput(requestBody?: Array<User>, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/user/createWithList`;
 
         let headers: HttpHeaders;
@@ -86,14 +86,14 @@ export class UserService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    loginUser(username?: string, password?: string, observe?: 'body', options?: RequestOptions<'text'>): Observable<string>;
-    loginUser(username?: string, password?: string, observe?: 'response', options?: RequestOptions<'text'>): Observable<HttpResponse<string>>;
-    loginUser(username?: string, password?: string, observe?: 'events', options?: RequestOptions<'text'>): Observable<HttpEvent<string>>;
+    loginUser(username?: string, password?: string, observe?: 'body', options?: RequestOptions<'text', string>): Observable<string>;
+    loginUser(username?: string, password?: string, observe?: 'response', options?: RequestOptions<'text', string>): Observable<HttpResponse<string>>;
+    loginUser(username?: string, password?: string, observe?: 'events', options?: RequestOptions<'text', string>): Observable<HttpEvent<string>>;
     /** Log into the system. */
-    loginUser(username?: string, password?: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    loginUser(username?: string, password?: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/user/login`;
 
         let params = new HttpParams();
@@ -123,14 +123,14 @@ export class UserService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    logoutUser(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    logoutUser(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    logoutUser(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    logoutUser(observe?: 'body', options?: RequestOptions<'json', any>): Observable<any>;
+    logoutUser(observe?: 'response', options?: RequestOptions<'json', any>): Observable<HttpResponse<any>>;
+    logoutUser(observe?: 'events', options?: RequestOptions<'json', any>): Observable<HttpEvent<any>>;
     /** Log user out of the system. */
-    logoutUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    logoutUser(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/user/logout`;
 
         let headers: HttpHeaders;
@@ -146,14 +146,14 @@ export class UserService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    getUserByName(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<User>;
-    getUserByName(username: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<User>>;
-    getUserByName(username: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<User>>;
+    getUserByName(username: string, observe?: 'body', options?: RequestOptions<'json', User>): Observable<User>;
+    getUserByName(username: string, observe?: 'response', options?: RequestOptions<'json', User>): Observable<HttpResponse<User>>;
+    getUserByName(username: string, observe?: 'events', options?: RequestOptions<'json', User>): Observable<HttpEvent<User>>;
     /** Get user detail based on username. */
-    getUserByName(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    getUserByName(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
         let headers: HttpHeaders;
@@ -173,14 +173,14 @@ export class UserService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    updateUser(username: string, user?: User, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    updateUser(username: string, user?: User, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    updateUser(username: string, user?: User, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    updateUser(username: string, user?: User, observe?: 'body', options?: RequestOptions<'json', any>): Observable<any>;
+    updateUser(username: string, user?: User, observe?: 'response', options?: RequestOptions<'json', any>): Observable<HttpResponse<any>>;
+    updateUser(username: string, user?: User, observe?: 'events', options?: RequestOptions<'json', any>): Observable<HttpEvent<any>>;
     /** This can only be done by the logged in user. */
-    updateUser(username: string, user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    updateUser(username: string, user?: User, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
         let headers: HttpHeaders;
@@ -201,14 +201,14 @@ export class UserService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    deleteUser(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    deleteUser(username: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    deleteUser(username: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    deleteUser(username: string, observe?: 'body', options?: RequestOptions<'json', any>): Observable<any>;
+    deleteUser(username: string, observe?: 'response', options?: RequestOptions<'json', any>): Observable<HttpResponse<any>>;
+    deleteUser(username: string, observe?: 'events', options?: RequestOptions<'json', any>): Observable<HttpEvent<any>>;
     /** This can only be done by the logged in user. */
-    deleteUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    deleteUser(username: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/user/${username}`;
 
         let headers: HttpHeaders;
@@ -224,6 +224,6 @@ export class UserService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 }

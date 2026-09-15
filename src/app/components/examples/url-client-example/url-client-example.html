@@ -1,0 +1,72 @@
+<section class="example-section">
+  <header class="section-header">
+    <div class="section-heading">
+      <h2 class="section-title">URL client · custom headers, Accept header and response types</h2>
+      <p class="section-description">
+        Generated from the remote spec, guarded by <code>validateInput</code>.
+        <code>customHeaders</code> and <code>emitAcceptHeader</code> decorate every request, and
+        <code>responseTypeMapping</code> pins Angular's <code>responseType</code> per content type.
+      </p>
+    </div>
+    <ul class="feature-tags">
+      <li>validateInput</li>
+      <li>customHeaders</li>
+      <li>emitAcceptHeader</li>
+      <li>responseTypeMapping</li>
+      <li>compilerOptions</li>
+    </ul>
+  </header>
+
+  <div class="split">
+    <div class="detail-panel">
+      <h3 class="detail-title">Request headers added by the generator</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Header</th><th>Value</th><th>Option</th></tr>
+        </thead>
+        <tbody>
+          @for (header of requestHeaders; track header.name) {
+            <tr>
+              <td><code>{{ header.name }}</code></td>
+              <td>{{ header.value }}</td>
+              <td><code>{{ header.source }}</code></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <p class="muted">Open the browser's Network tab to see these on the request to <code>/pet/findByStatus</code>.</p>
+    </div>
+
+    <div class="detail-panel">
+      <h3 class="detail-title">PetService.findPetsByStatus('sold', 'response')</h3>
+      <div class="toolbar">
+        <button type="button" class="secondary-button" (click)="response.reload()" [disabled]="response.isLoading()">
+          Reload
+        </button>
+        <span class="resource-state" [class.is-loading]="response.isLoading()">{{ response.status() }}</span>
+      </div>
+      @if (response.error(); as error) {
+        <div class="error-state"><strong>Request failed.</strong> {{ error.message }}</div>
+      } @else if (response.hasValue()) {
+        <div class="pet-details">
+          <div class="detail-item">
+            <span class="detail-label">HTTP status</span>
+            <span class="detail-value">{{ response.value().status }} {{ response.value().statusText }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Sold pets</span>
+            <span class="detail-value">{{ soldCount() }}</span>
+          </div>
+          @for (header of responseHeaders(); track header.name) {
+            <div class="detail-item">
+              <span class="detail-label">{{ header.name }}</span>
+              <span class="detail-value">{{ header.value }}</span>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="muted">Loading…</p>
+      }
+    </div>
+  </div>
+</section>

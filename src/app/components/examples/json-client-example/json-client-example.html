@@ -1,0 +1,100 @@
+<section class="example-section">
+  <header class="section-header">
+    <div class="section-heading">
+      <h2 class="section-title">JSON client · runtime validation with Zod</h2>
+      <p class="section-description">
+        <code>ZodPlugin</code> emits one Zod schema per operation into <code>generated/validators</code>.
+        <code>validation.response</code> adds a <code>parse</code> hook to every service method, and
+        <code>modelFileStructure: 'per-type'</code> writes one file per model.
+      </p>
+    </div>
+    <ul class="feature-tags">
+      <li>ZodPlugin</li>
+      <li>validation.response</li>
+      <li>modelFileStructure</li>
+      <li>HttpResourcePlugin</li>
+    </ul>
+  </header>
+
+  <div class="toolbar">
+    <label class="field">
+      <span>Status</span>
+      <select [value]="status()" (change)="onStatusChange($event)">
+        @for (s of statuses; track s) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </label>
+    <label class="field field--inline">
+      <input type="checkbox" [checked]="strict()" (change)="onStrictChange($event)" />
+      <span>Strict: reject the whole response on the first invalid pet</span>
+    </label>
+    <button type="button" class="secondary-button" (click)="pets.reload()" [disabled]="pets.isLoading()">
+      Reload
+    </button>
+    <span class="resource-state" [class.is-loading]="pets.isLoading()">
+      PetResource.findPetsByStatus · {{ pets.status() }}
+    </span>
+  </div>
+
+  @if (pets.error(); as error) {
+    <div class="error-state">
+      <strong>Response rejected by findPetsByStatus200Response.</strong>
+      <pre class="error-details">{{ error.message }}</pre>
+    </div>
+  } @else if (rejectedCount() > 0) {
+    <div class="notice-state">
+      <strong>{{ rejectedCount() }} malformed pet(s) dropped</strong> by
+      <code>findPetsByStatus200ResponseItem.safeParse</code>. Switch to strict mode to see the full Zod error.
+    </div>
+  }
+
+  <div class="pets-grid">
+    @for (pet of limitedPets(); track pet.id ?? $index) {
+      <button
+        type="button"
+        class="pet-card pet-card--clickable"
+        [class.is-selected]="pet.id === selectedPetId()"
+        (click)="selectedPetId.set(pet.id)"
+      >
+        <div class="pet-header">
+          <h3 class="pet-name">{{ pet.name }}</h3>
+          <span class="pet-id">#{{ pet.id }}</span>
+        </div>
+        <div class="pet-details">
+          <div class="detail-item">
+            <span class="detail-label">Category</span>
+            <span class="detail-value">{{ pet.category?.name || 'Uncategorized' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span [class]="'status-badge status-' + (pet.status ?? 'unknown')">
+              {{ pet.status ?? 'unknown' }}
+            </span>
+          </div>
+        </div>
+      </button>
+    } @empty {
+      <div class="empty-state">
+        <div class="empty-icon">🐾</div>
+        <h3>No pets with status "{{ status() }}"</h3>
+        <p>Pick another status or reload.</p>
+      </div>
+    }
+  </div>
+
+  <div class="detail-panel">
+    <h3 class="detail-title">
+      PetService.getPetById(id, undefined, {{ '{' }} parse: getPetById200Response.parse {{ '}' }})
+    </h3>
+    @if (selectedPet.isLoading()) {
+      <p class="muted">Loading pet #{{ selectedPetId() }}…</p>
+    } @else if (selectedPet.error(); as error) {
+      <div class="error-state"><strong>Request failed.</strong> {{ error.message }}</div>
+    } @else if (selectedPet.hasValue()) {
+      <pre class="json-block">{{ selectedPet.value() | json }}</pre>
+    } @else {
+      <p class="muted">Select a pet above to load it through the HttpClient service with Zod validation.</p>
+    }
+  </div>
+</section>

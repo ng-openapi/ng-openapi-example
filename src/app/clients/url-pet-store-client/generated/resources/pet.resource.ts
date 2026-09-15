@@ -34,8 +34,11 @@ export class PetResource {
             if (!headers.has('Accept')) {
                 headers = headers.set('Accept', 'application/json');
             }
+            if (!headers.has('api_key')) {
+                headers = headers.set('api_key', 'special-key');
+            }
         } else {
-            headers = { 'Accept': 'application/json', ...headers };
+            headers = { 'Accept': 'application/json', 'api_key': 'special-key', ...headers };
         }
         return httpResource(() => {
             let params = new HttpParams();
@@ -65,8 +68,11 @@ export class PetResource {
             if (!headers.has('Accept')) {
                 headers = headers.set('Accept', 'application/json');
             }
+            if (!headers.has('api_key')) {
+                headers = headers.set('api_key', 'special-key');
+            }
         } else {
-            headers = { 'Accept': 'application/json', ...headers };
+            headers = { 'Accept': 'application/json', 'api_key': 'special-key', ...headers };
         }
         return httpResource(() => {
             let params = new HttpParams();
@@ -96,8 +102,11 @@ export class PetResource {
             if (!headers.has('Accept')) {
                 headers = headers.set('Accept', 'application/json');
             }
+            if (!headers.has('api_key')) {
+                headers = headers.set('api_key', 'special-key');
+            }
         } else {
-            headers = { 'Accept': 'application/json', ...headers };
+            headers = { 'Accept': 'application/json', 'api_key': 'special-key', ...headers };
         }
         return httpResource(() => {
             return {

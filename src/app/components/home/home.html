@@ -14,9 +14,9 @@
         <h3 class="card-title">📋 Quick Start</h3>
       </div>
       <div class="card-content">
-        <p class="card-description">Generate your Angular client by running:</p>
+        <p class="card-description">Generate all three Angular clients by running:</p>
         <div class="code-block">
-          <code>npm run generate-client</code>
+          <code>npm run build:clients</code>
         </div>
       </div>
     </div>
@@ -28,8 +28,11 @@
       </div>
       <div class="card-content">
         <p class="card-description">
-          Everything about the client and the dummy <strong>swagger.json</strong> is contained in
-          <code class="inline-code">./src/client</code>
+          Each client lives in <code class="inline-code">src/app/clients/*</code> with its spec, its
+          <code class="inline-code">openapi.config.ts</code> and the <code class="inline-code">generated/</code> output.
+          The JSON client adds Zod validators, the YAML client uses a single request parameter with
+          <code class="inline-code">&#64;Service()</code> and custom naming, and the URL client adds
+          custom headers and response type mappings.
         </p>
       </div>
     </div>

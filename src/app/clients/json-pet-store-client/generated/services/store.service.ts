@@ -9,7 +9,7 @@
 */
 import { HttpClient, HttpContext, HttpContextToken, HttpEvent, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { BASE_PATH_PETSTOREJSON, CLIENT_CONTEXT_TOKEN_PETSTOREJSON } from "../tokens";
 import { HttpParamsBuilder } from "../utils/http-params-builder";
 import { RequestOptions, Order } from "../models";
@@ -25,11 +25,11 @@ export class StoreService {
         return context.set(this.clientContextToken, 'PetStoreJson');
     }
 
-    getInventory(observe?: 'body', options?: RequestOptions<'json'>): Observable<Record<string, any>>;
-    getInventory(observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Record<string, any>>>;
-    getInventory(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Record<string, any>>>;
+    getInventory(observe?: 'body', options?: RequestOptions<'json', Record<string, any>>): Observable<Record<string, any>>;
+    getInventory(observe?: 'response', options?: RequestOptions<'json', Record<string, any>>): Observable<HttpResponse<Record<string, any>>>;
+    getInventory(observe?: 'events', options?: RequestOptions<'json', Record<string, any>>): Observable<HttpEvent<Record<string, any>>>;
     /** Returns a map of status codes to quantities. */
-    getInventory(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    getInventory(observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/store/inventory`;
 
         let headers: HttpHeaders;
@@ -49,14 +49,14 @@ export class StoreService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    placeOrder(order?: Order, observe?: 'body', options?: RequestOptions<'json'>): Observable<Order>;
-    placeOrder(order?: Order, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Order>>;
-    placeOrder(order?: Order, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Order>>;
+    placeOrder(order?: Order, observe?: 'body', options?: RequestOptions<'json', Order>): Observable<Order>;
+    placeOrder(order?: Order, observe?: 'response', options?: RequestOptions<'json', Order>): Observable<HttpResponse<Order>>;
+    placeOrder(order?: Order, observe?: 'events', options?: RequestOptions<'json', Order>): Observable<HttpEvent<Order>>;
     /** Place a new order in the store. */
-    placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    placeOrder(order?: Order, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/store/order`;
 
         let headers: HttpHeaders;
@@ -81,14 +81,14 @@ export class StoreService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    getOrderById(orderId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<Order>;
-    getOrderById(orderId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<Order>>;
-    getOrderById(orderId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<Order>>;
+    getOrderById(orderId: number, observe?: 'body', options?: RequestOptions<'json', Order>): Observable<Order>;
+    getOrderById(orderId: number, observe?: 'response', options?: RequestOptions<'json', Order>): Observable<HttpResponse<Order>>;
+    getOrderById(orderId: number, observe?: 'events', options?: RequestOptions<'json', Order>): Observable<HttpEvent<Order>>;
     /** For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions. */
-    getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    getOrderById(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
         let headers: HttpHeaders;
@@ -108,14 +108,14 @@ export class StoreService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 
-    deleteOrder(orderId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    deleteOrder(orderId: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    deleteOrder(orderId: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    deleteOrder(orderId: number, observe?: 'body', options?: RequestOptions<'json', any>): Observable<any>;
+    deleteOrder(orderId: number, observe?: 'response', options?: RequestOptions<'json', any>): Observable<HttpResponse<any>>;
+    deleteOrder(orderId: number, observe?: 'events', options?: RequestOptions<'json', any>): Observable<HttpEvent<any>>;
     /** For valid response try integer IDs with value < 1000. Anything above 1000 or non-integers will generate API errors. */
-    deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    deleteOrder(orderId: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text', any>): Observable<any> {
         const url = `${this.basePath}/store/order/${orderId}`;
 
         let headers: HttpHeaders;
@@ -131,6 +131,6 @@ export class StoreService {
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        });
+        }).pipe(map(response => options?.parse?.(response) ?? response));
     }
 }

@@ -1,4 +1,4 @@
-import {Component, inject, computed} from '@angular/core';
+import {Component, inject, computed, ChangeDetectionStrategy} from '@angular/core';
 import {PetService} from '../../clients/json-pet-store-client/generated';
 import {toSignal} from '@angular/core/rxjs-interop';
 
@@ -6,6 +6,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
   selector: 'app-example-view',
   imports: [],
   templateUrl: './example-view.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './example-view.css'
 })
 export class ExampleView {

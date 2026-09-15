@@ -1,4 +1,4 @@
-/* @ts-nocheck */
+// @ts-nocheck
 /* eslint-disable */
 /* @noformat */
 /* @formatter:off */
@@ -38,20 +38,23 @@ export class PetService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
         // Set Content-Type for JSON requests if not already set
         if (!headers.has('Content-Type')) {
             headers = headers.set('Content-Type', 'application/json');
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('post', url, {
+            body: pet,
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.post(url, pet, requestOptions);
+        });
     }
 
     updatePet(pet: Pet, observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet>;
@@ -67,20 +70,23 @@ export class PetService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
         // Set Content-Type for JSON requests if not already set
         if (!headers.has('Content-Type')) {
             headers = headers.set('Content-Type', 'application/json');
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('put', url, {
+            body: pet,
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.put(url, pet, requestOptions);
+        });
     }
 
     findPetsByStatus(status?: 'available' | 'pending' | 'sold', observe?: 'body', options?: RequestOptions<'json'>): Observable<Array<Pet>>;
@@ -101,17 +107,19 @@ export class PetService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('get', url, {
+            observe,
             headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.get(url, requestOptions);
+        });
     }
 
     findPetsByTags(tags?: Array<string>, observe?: 'body', options?: RequestOptions<'json'>): Observable<Array<Pet>>;
@@ -132,17 +140,19 @@ export class PetService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('get', url, {
+            observe,
             headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.get(url, requestOptions);
+        });
     }
 
     getPetById(petId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet>;
@@ -158,16 +168,18 @@ export class PetService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('get', url, {
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.get(url, requestOptions);
+        });
     }
 
     updatePetWithForm(petId: number, name?: string, status?: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<Pet>;
@@ -191,17 +203,20 @@ export class PetService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('post', url, {
+            body: null,
+            observe,
             headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.post(url, null, requestOptions);
+        });
     }
 
     deletePet(petId: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
@@ -218,15 +233,13 @@ export class PetService {
             headers = new HttpHeaders(options?.headers);
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('delete', url, {
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.delete(url, requestOptions);
+        });
     }
 
     uploadFile(petId: number, additionalMetadata?: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<ApiResponse>;
@@ -247,20 +260,23 @@ export class PetService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
         // Set Content-Type for JSON requests if not already set
         if (!headers.has('Content-Type')) {
             headers = headers.set('Content-Type', 'application/json');
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('post', url, {
+            body: null,
+            observe,
             headers,
             params,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.post(url, null, requestOptions);
+        });
     }
 }

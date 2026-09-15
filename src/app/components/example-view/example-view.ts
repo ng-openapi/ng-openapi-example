@@ -1,21 +1,14 @@
-import {Component, inject, computed, ChangeDetectionStrategy} from '@angular/core';
-import {PetService} from '../../clients/json-pet-store-client/generated';
-import {toSignal} from '@angular/core/rxjs-interop';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {RouterLink} from '@angular/router';
+import {JsonClientExample} from '../examples/json-client-example/json-client-example';
+import {YamlClientExample} from '../examples/yaml-client-example/yaml-client-example';
+import {UrlClientExample} from '../examples/url-client-example/url-client-example';
 
 @Component({
   selector: 'app-example-view',
-  imports: [],
+  imports: [RouterLink, JsonClientExample, YamlClientExample, UrlClientExample],
   templateUrl: './example-view.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './example-view.css'
+  styleUrl: './example-view.css',
 })
-export class ExampleView {
-  readonly #petService = inject(PetService);
-  readonly availablePets = toSignal(this.#petService.findPetsByStatus("available"));
-
-  // Computed signal to get only first 5 pets
-  readonly limitedPets = computed(() => {
-    const pets = this.availablePets();
-    return pets ? pets.slice(0, 5) : [];
-  });
-}
+export class ExampleView {}

@@ -38,6 +38,10 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Add default headers if not already present
+        if (!headers.has('api_key')) {
+            headers = headers.set('api_key', 'special-key');
+        }
         // Advertise the response content type declared in the spec
         if (!headers.has('Accept')) {
             headers = headers.set('Accept', 'application/json');
@@ -69,6 +73,10 @@ export class UserService {
             headers = options.headers;
         } else {
             headers = new HttpHeaders(options?.headers);
+        }
+        // Add default headers if not already present
+        if (!headers.has('api_key')) {
+            headers = headers.set('api_key', 'special-key');
         }
         // Advertise the response content type declared in the spec
         if (!headers.has('Accept')) {
@@ -110,6 +118,10 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Add default headers if not already present
+        if (!headers.has('api_key')) {
+            headers = headers.set('api_key', 'special-key');
+        }
         // Advertise the response content type declared in the spec
         if (!headers.has('Accept')) {
             headers = headers.set('Accept', 'application/json, application/xml');
@@ -139,6 +151,10 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Add default headers if not already present
+        if (!headers.has('api_key')) {
+            headers = headers.set('api_key', 'special-key');
+        }
 
         return this.httpClient.request('get', url, {
             observe,
@@ -161,6 +177,10 @@ export class UserService {
             headers = options.headers;
         } else {
             headers = new HttpHeaders(options?.headers);
+        }
+        // Add default headers if not already present
+        if (!headers.has('api_key')) {
+            headers = headers.set('api_key', 'special-key');
         }
         // Advertise the response content type declared in the spec
         if (!headers.has('Accept')) {
@@ -189,6 +209,10 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Add default headers if not already present
+        if (!headers.has('api_key')) {
+            headers = headers.set('api_key', 'special-key');
+        }
         // Set Content-Type for JSON requests if not already set
         if (!headers.has('Content-Type')) {
             headers = headers.set('Content-Type', 'application/json');
@@ -216,6 +240,10 @@ export class UserService {
             headers = options.headers;
         } else {
             headers = new HttpHeaders(options?.headers);
+        }
+        // Add default headers if not already present
+        if (!headers.has('api_key')) {
+            headers = headers.set('api_key', 'special-key');
         }
 
         return this.httpClient.request('delete', url, {

@@ -34,8 +34,11 @@ export class UserResource {
             if (!headers.has('Accept')) {
                 headers = headers.set('Accept', 'application/json, application/xml');
             }
+            if (!headers.has('api_key')) {
+                headers = headers.set('api_key', 'special-key');
+            }
         } else {
-            headers = { 'Accept': 'application/json, application/xml', ...headers };
+            headers = { 'Accept': 'application/json, application/xml', 'api_key': 'special-key', ...headers };
         }
         return httpResource.text(() => {
             let params = new HttpParams();
@@ -62,11 +65,22 @@ export class UserResource {
     logoutUser(resourceOptions?: HttpResourceOptions<any, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<any | undefined>;
     /** Log user out of the system. */
     logoutUser(resourceOptions?: HttpResourceOptions<any, unknown>, requestOptions?: Omit<HttpResourceRequest, "method" | "url" | "params">): HttpResourceRef<any | undefined> {
+
+        // Add default headers if not already present
+        let headers = requestOptions?.headers;
+        if (headers instanceof HttpHeaders) {
+            if (!headers.has('api_key')) {
+                headers = headers.set('api_key', 'special-key');
+            }
+        } else {
+            headers = { 'api_key': 'special-key', ...headers };
+        }
         return httpResource(() => {
             return {
                 url: `${this.basePath}/user/logout`,
                 method: "GET",
                 ...requestOptions,
+                headers,
                 context: this.createContextWithClientId(requestOptions?.context)
             }
         }, resourceOptions);
@@ -83,8 +97,11 @@ export class UserResource {
             if (!headers.has('Accept')) {
                 headers = headers.set('Accept', 'application/json');
             }
+            if (!headers.has('api_key')) {
+                headers = headers.set('api_key', 'special-key');
+            }
         } else {
-            headers = { 'Accept': 'application/json', ...headers };
+            headers = { 'Accept': 'application/json', 'api_key': 'special-key', ...headers };
         }
         return httpResource(() => {
             return {

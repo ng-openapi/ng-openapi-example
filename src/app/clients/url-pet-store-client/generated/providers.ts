@@ -1,4 +1,4 @@
-/* @ts-nocheck */
+// @ts-nocheck
 /* eslint-disable */
 /* @noformat */
 /* @formatter:off */
@@ -21,6 +21,9 @@ export interface PetStoreUrlConfig {
     enableDateTransform?: boolean;
     /** Array of HTTP interceptor classes to apply to this client */
     interceptors?: (new (...args: HttpInterceptor[]) => HttpInterceptor)[];
+    /** Override the pattern used to detect ISO date strings during date transformation. */
+    /** Defaults to the generated ISO_DATE_REGEX. */
+    dateTransformRegex?: RegExp;
 }
 
 /** Provides configuration for PetStoreUrl client */
@@ -62,7 +65,7 @@ export function providePetStoreUrlClient(config: PetStoreUrlConfig): Environment
 
         // Add date interceptor if enabled (default: true)
         if (config.enableDateTransform !== false) {
-            interceptorInstances.unshift(new DateInterceptor());
+            interceptorInstances.unshift(new DateInterceptor(config.dateTransformRegex));
         }
 
         providers.push({
@@ -73,7 +76,7 @@ export function providePetStoreUrlClient(config: PetStoreUrlConfig): Environment
         // Only date interceptor enabled
         providers.push({
             provide: HTTP_INTERCEPTORS_PETSTOREURL,
-            useValue: [new DateInterceptor()]
+            useValue: [new DateInterceptor(config.dateTransformRegex)]
         });
     } else {
         // No interceptors

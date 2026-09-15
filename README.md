@@ -1,59 +1,97 @@
-# NgOpenapiExample
+# ng-openapi example
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.1.
+Example Angular application showing how to generate and consume typed API clients with
+[ng-openapi](https://ng-openapi.dev) from the Swagger Pet Store OpenAPI specification.
 
-## Development server
+The same spec is consumed three ways, so you can compare the generated output:
 
-To start a local development server, run:
+| Client | Spec source | Config |
+|---|---|---|
+| `PetStoreJson` | Local `swagger.json` | `src/app/clients/json-pet-store-client/openapi.config.ts` |
+| `PetStoreYaml` | Local `openapi.yaml` | `src/app/clients/yaml-pet-store-client/openapi.config.ts` |
+| `PetStoreUrl` | Remote `https://petstore3.swagger.io/api/v3/openapi.json` | `src/app/clients/url-pet-store-client/openapi.config.ts` |
 
-```bash
-ng serve
-```
+Each client is generated into a `generated/` folder next to its config and includes models,
+injectable services, a `provide<ClientName>Client()` provider function, and
+`httpResource()`-based resources from the `@ng-openapi/http-resource` plugin.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Toolchain
 
-## Code scaffolding
+| Tool | Version |
+|---|---|
+| Angular | 22.1 |
+| Angular CLI | 22.1 |
+| TypeScript | 6.0 |
+| ng-openapi | 0.4 |
+| @ng-openapi/http-resource | 0.2 |
+| Node.js | 22.22.3+, 24.15.0+ or 26+ |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+The app runs zoneless. `zone.js` is not installed and no zone polyfill is configured.
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Getting started
 
 ```bash
-ng test
+npm ci
+npm run build:clients
+npm start
 ```
 
-## Running end-to-end tests
+Then open `http://localhost:4200/`. The home page links to a live example that calls the
+public Pet Store API through the generated `PetService`.
 
-For end-to-end (e2e) testing, run:
+## Generating the clients
 
 ```bash
-ng e2e
+npm run build:json    # from swagger.json
+npm run build:yaml    # from openapi.yaml
+npm run build:url     # from the remote spec
+npm run build:clients # all three
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The `url` client needs network access. Its config also demonstrates `validateInput`, which
+rejects the spec unless the title matches the expected Pet Store document.
 
-## Additional Resources
+All three configs use the same options:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `dateType: 'Date'` so date-time fields are deserialized into `Date` objects.
+- `enumStyle: 'enum'` with `generateEnumBasedOnDescription` for TypeScript enums.
+- `customizeMethodName` to keep only the part of the operation ID after the last underscore and camel-case it.
+- `plugins: [HttpResourcePlugin]` to additionally emit signal-based `httpResource()` wrappers.
+
+## Wiring the clients into the app
+
+`src/app/app.config.ts` registers all three clients with `provideHttpClient()` and passes a
+`basePath` plus a per-client list of class-based interceptors from
+`src/app/interceptors/interceptors.ts`. Each client gets its own interceptor chain, so requests
+from different clients can be logged, authenticated, or error-handled independently.
+
+## Building and testing
+
+```bash
+npm run build   # production build into dist/
+npm test        # Karma + Jasmine
+```
+
+The Karma runner needs a Chromium-based browser. If Chrome is not installed at its default
+location, point `CHROME_BIN` at another binary, for example Microsoft Edge:
+
+```powershell
+$env:CHROME_BIN = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+npm test -- --watch=false --browsers=ChromeHeadless
+```
+
+## Project layout
+
+```
+src/app/
+  app.config.ts          providers: router, HttpClient, three generated clients
+  app.routes.ts          "" -> Home, "example" -> ExampleView
+  components/
+    home/                landing page
+    example-view/        lists available pets via PetService + toSignal()
+  interceptors/          Logging, Auth, Error and Warning HttpInterceptor classes
+  clients/
+    json-pet-store-client/   swagger.json + openapi.config.ts + generated/
+    yaml-pet-store-client/   openapi.yaml  + openapi.config.ts + generated/
+    url-pet-store-client/    openapi.config.ts + generated/
+```

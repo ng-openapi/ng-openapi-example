@@ -1,4 +1,4 @@
-/* @ts-nocheck */
+// @ts-nocheck
 /* eslint-disable */
 /* @noformat */
 /* @formatter:off */
@@ -38,20 +38,23 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
         // Set Content-Type for JSON requests if not already set
         if (!headers.has('Content-Type')) {
             headers = headers.set('Content-Type', 'application/json');
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('post', url, {
+            body: user,
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.post(url, user, requestOptions);
+        });
     }
 
     createUsersWithListInput(requestBody?: Array<User>, observe?: 'body', options?: RequestOptions<'json'>): Observable<User>;
@@ -67,20 +70,23 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
         // Set Content-Type for JSON requests if not already set
         if (!headers.has('Content-Type')) {
             headers = headers.set('Content-Type', 'application/json');
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('post', url, {
+            body: requestBody,
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.post(url, requestBody, requestOptions);
+        });
     }
 
     loginUser(username?: string, password?: string, observe?: 'body', options?: RequestOptions<'text'>): Observable<string>;
@@ -104,18 +110,20 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json, application/xml');
+        }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('get', url, {
+            observe,
             headers,
             params,
-            responseType: 'text' as 'text',
+            responseType: 'text',
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.get(url, requestOptions);
+        });
     }
 
     logoutUser(observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
@@ -132,15 +140,13 @@ export class UserService {
             headers = new HttpHeaders(options?.headers);
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('get', url, {
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.get(url, requestOptions);
+        });
     }
 
     getUserByName(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<User>;
@@ -156,16 +162,18 @@ export class UserService {
         } else {
             headers = new HttpHeaders(options?.headers);
         }
+        // Advertise the response content type declared in the spec
+        if (!headers.has('Accept')) {
+            headers = headers.set('Accept', 'application/json');
+        }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('get', url, {
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.get(url, requestOptions);
+        });
     }
 
     updateUser(username: string, user?: User, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
@@ -186,15 +194,14 @@ export class UserService {
             headers = headers.set('Content-Type', 'application/json');
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('put', url, {
+            body: user,
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.put(url, user, requestOptions);
+        });
     }
 
     deleteUser(username: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
@@ -211,14 +218,12 @@ export class UserService {
             headers = new HttpHeaders(options?.headers);
         }
 
-        const requestOptions: any = {
-            observe: observe as any,
+        return this.httpClient.request('delete', url, {
+            observe,
             headers,
             reportProgress: options?.reportProgress,
             withCredentials: options?.withCredentials,
             context: this.createContextWithClientId(options?.context)
-        };
-
-        return this.httpClient.delete(url, requestOptions);
+        });
     }
 }
